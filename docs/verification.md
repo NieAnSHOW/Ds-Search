@@ -2,11 +2,26 @@
 
 日期：2026-10-18。工作分支：`codex/ds-search`。
 
+## 分发与安装检查
+
+仓库的标准 Skill 路径为 `skills/ds-search/SKILL.md`。推荐使用 Vercel Labs `skills` CLI：
+
+```sh
+npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --global --copy --yes
+npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --copy --yes
+npx skills update ds-search --global --yes
+npx skills update ds-search --project --yes
+```
+
+只读发现检查使用 `npx skills add . --list`。`skills` 1.7.2 禁止把 `--list` 与 `--json` 组合，因此验证脚本必须单独检查展示文本，不得拼接这两个选项。安装器在消费者工作区生成并维护 `skills-lock.json`；本仓库不预生成或提交该文件。
+
+安装 smoke test 应在临时项目中使用本地源与 `--copy --yes`，检查 `SKILL.md`、`scripts/` 和 `references/` 均存在，并确认真实用户目录与仓库未产生锁定文件。全局安装和真实更新属于使用者环境，不在离线 CI 中执行。
+
 ## 已执行
 
 | 检查 | 结果 |
 | --- | --- |
-| `python3 -m unittest discover -s tests -v` | 48 项通过 |
+| `python3 -m unittest discover -s tests -v` | 离线测试通过（含文档命令与安全断言） |
 | `python3 tools/check_repository.py` | 元数据、引用、仓库资源有效 |
 | Skill Creator 的 `quick_validate.py skills/ds-search` | 通过 |
 | `python3 -m compileall -q skills/ds-search/scripts tools` | 通过 |

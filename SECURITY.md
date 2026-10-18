@@ -2,6 +2,10 @@
 
 ds-search 尽量缩小密钥暴露面，但不能保证已被攻陷的操作系统、同权限恶意进程或被劫持的 Python 环境中的密钥安全。
 
+## Skill 分发边界
+
+推荐从已核对的 GitHub 源安装：`npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --global --copy --yes`；项目级安装省略 `--global`。`npx skills` 只下载并放置 Skill 文件，不读取或传输 DeepSeek API Key。使用 `--copy` 后请检查实际复制的文件，再允许目标 Harness 加载。更新使用 `npx skills update ds-search --global --yes` 或 `--project --yes`，依赖消费者已有的 `skills-lock.json`；该锁定文件由消费者生成，不属于本仓库。发现仓库内容可运行 `npx skills add . --list`，`skills` 1.7.2 不允许与 `--json` 组合。
+
 ## 凭据存储与输入
 
 - 密钥只从进程环境变量 `DEEPSEEK_API_KEY`、受支持的系统凭据库或用户显式选择的终端隐藏输入获取。不扫描用户目录，不读取项目 `.env`。
