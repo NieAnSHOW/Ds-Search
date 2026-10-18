@@ -13,9 +13,9 @@ npx skills update ds-search --global --yes
 npx skills update ds-search --project --yes
 ```
 
-只读发现检查使用 `npx skills add . --list`。`skills` 1.7.2 禁止把 `--list` 与 `--json` 组合，因此验证脚本必须单独检查展示文本，不得拼接这两个选项。安装器在消费者工作区生成并维护 `skills-lock.json`；本仓库不预生成或提交该文件。
+只读发现检查应从本地 Ds-Search checkout 根目录运行 `npx skills add . --list`。`skills` 1.7.2 禁止把 `--list` 与 `--json` 组合，因此验证脚本必须单独检查展示文本，不得拼接这两个选项。项目安装记录为项目根目录的 `skills-lock.json`；全局安装记录为 CLI 用户全局状态目录中的 `.skill-lock.json`（具体位置可由 XDG 状态目录配置改变）。两种记录均由消费者生成，本仓库不预生成或提交。
 
-安装 smoke test 应在临时项目中使用本地源与 `--copy --yes`，检查 `SKILL.md`、`scripts/` 和 `references/` 均存在，并确认真实用户目录与仓库未产生锁定文件。全局安装和真实更新属于使用者环境，不在离线 CI 中执行。
+安装 smoke test 应在临时项目中使用本地源与 `--copy --yes`，检查 `SKILL.md`、`scripts/` 和 `references/` 均存在，并确认真实用户目录与仓库未产生锁定文件。全局安装和真实更新属于使用者环境，不在离线 CI 中执行；项目更新读取 `skills-lock.json`，全局更新读取用户状态目录的 `.skill-lock.json`。
 
 ## 已执行
 
