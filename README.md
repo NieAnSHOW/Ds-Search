@@ -40,6 +40,14 @@ npx skills add . --list
 
 在 `skills` 1.7.2 中，`--list` cannot be combined with `--json`；不要把两个选项放在同一条命令中。需要机器可读输出时，按 CLI 版本支持的独立 `--json` 命令使用。
 
+查看当前环境中已安装 Skill 的机器可读列表（这是安装状态查询，与上面的本地源发现分开）：
+
+```sh
+npx skills list --json
+```
+
+`npx skills list --json` 只列出已安装 Skill；不要把 `--json` 拼接到 `npx --yes skills@1.7.2 add . --list` 上。
+
 更新已通过 CLI 安装并记录来源的 Skill：
 
 ```sh

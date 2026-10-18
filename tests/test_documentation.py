@@ -42,6 +42,8 @@ class SkillDocumentationTests(unittest.TestCase):
         self.assertIn("npx skills update ds-search --global --yes", readme)
         self.assertIn("npx skills update ds-search --project --yes", readme)
         self.assertIn("npx skills add . --list", readme)
+        self.assertIn("npx skills list --json", readme)
+        self.assertIn("已安装", readme)
         self.assertIn("`--list` cannot be combined with `--json`", readme)
         self.assertIn("skills-lock.json", readme)
         self.assertIn("消费者 CLI 生成", readme)
