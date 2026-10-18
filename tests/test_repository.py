@@ -1,8 +1,11 @@
 """Repository checks must reject broken/disconnected skill resources."""
 
+import os
+from pathlib import Path
+import shutil
+import subprocess
 import tempfile
 import unittest
-from pathlib import Path
 
 
 class RepositoryValidationTests(unittest.TestCase):
@@ -60,6 +63,102 @@ class RepositoryValidationTests(unittest.TestCase):
         path = self.skill / "agents/openai.yaml"
         path.write_text(path.read_text().replace("$ds-search", "another tool"), encoding="utf-8")
         self.assertTrue(any("default_prompt" in item for item in self.validate()))
+
+    def _skills_cli_environment(self, sandbox: Path) -> dict[str, str]:
+        """Keep npm/skills state and credentials inside a disposable sandbox."""
+        env = os.environ.copy()
+        env.update(
+            {
+                "HOME": str(sandbox / "home"),
+                "XDG_CONFIG_HOME": str(sandbox / "config"),
+                "XDG_DATA_HOME": str(sandbox / "data"),
+                "XDG_CACHE_HOME": str(sandbox / "cache"),
+                "npm_config_cache": str(sandbox / "npm-cache"),
+                "npm_config_userconfig": str(sandbox / "npmrc"),
+                "npm_config_global": "false",
+                "npm_config_prefix": str(sandbox / "npm-prefix"),
+            }
+        )
+        for key in ("DEEPSEEK_API_KEY", "DEEPSEEK_API_BASE"):
+            env.pop(key, None)
+        return env
+
+    def _npx_path_or_skip(self) -> str:
+        npx = shutil.which("npx")
+        if npx is None:
+            self.skipTest("npx is unavailable; skipping skills CLI integration test")
+        return npx
+
+    def test_local_skills_cli_discovers_ds_search(self):
+        """The CLI discovers the named skill while the source path stays canonical."""
+        npx = self._npx_path_or_skip()
+        repository = Path(__file__).resolve().parents[1]
+        entrypoint = repository / "skills/ds-search/SKILL.md"
+        self.assertTrue(entrypoint.is_file(), "canonical Skill entrypoint is missing")
+
+        with tempfile.TemporaryDirectory() as directory:
+            sandbox = Path(directory)
+            project = sandbox / "project"
+            project.mkdir()
+            result = subprocess.run(
+                [npx, "--yes", "skills", "add", str(repository), "--list"],
+                cwd=project,
+                env=self._skills_cli_environment(sandbox),
+                text=True,
+                capture_output=True,
+                timeout=120,
+                check=False,
+            )
+
+        output = f"{result.stdout}\n{result.stderr}"
+        self.assertEqual(result.returncode, 0, output)
+        self.assertIn("ds-search", output)
+
+    def test_local_skills_cli_installs_into_isolated_project(self):
+        """A project-scoped copy contains the complete Skill and owns its lock file."""
+        npx = self._npx_path_or_skip()
+        repository = Path(__file__).resolve().parents[1]
+        repository_lock = repository / "skills-lock.json"
+        self.assertFalse(repository_lock.exists(), "consumer lock file already exists in repository")
+
+        with tempfile.TemporaryDirectory() as directory:
+            sandbox = Path(directory)
+            project = sandbox / "project"
+            project.mkdir()
+            result = subprocess.run(
+                [
+                    npx,
+                    "--yes",
+                    "skills",
+                    "add",
+                    str(repository),
+                    "--skill",
+                    "ds-search",
+                    "--copy",
+                    "--yes",
+                ],
+                cwd=project,
+                env=self._skills_cli_environment(sandbox),
+                text=True,
+                capture_output=True,
+                timeout=120,
+                check=False,
+            )
+            output = f"{result.stdout}\n{result.stderr}"
+            self.assertEqual(result.returncode, 0, output)
+
+            installed_entries = list(project.rglob("ds-search/SKILL.md"))
+            self.assertTrue(installed_entries, output)
+            installed_skill = installed_entries[0].parent
+            self.assertFalse(installed_skill.is_symlink())
+            self.assertTrue((installed_skill / "scripts").is_dir())
+            self.assertTrue(any((installed_skill / "scripts").iterdir()))
+            self.assertTrue((installed_skill / "references").is_dir())
+            self.assertTrue(any((installed_skill / "references").iterdir()))
+
+            self.assertTrue((project / "skills-lock.json").is_file())
+
+        self.assertFalse(repository_lock.exists(), "skills CLI must not write a lock file to the source repository")
 
 
 if __name__ == "__main__":
