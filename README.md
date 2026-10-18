@@ -10,39 +10,54 @@
   <a href="#安装">安装</a> · <a href="#首次配置">首次配置</a> · <a href="#使用">使用</a> · <a href="SECURITY.md">安全说明</a> · <a href="LICENSE">MIT</a>
 </p>
 
-搜索返回标题、链接、摘要等结构化结果；抓取返回页面标题和 Markdown 正文。网络客户端只用 Python 标准库，可选 `keyring` 将 API Key 存入系统凭据库。整个 `skills/ds-search` 目录可独立复制使用。
+搜索返回标题、链接、摘要等结构化结果；抓取返回页面标题和 Markdown 正文。网络客户端只用 Python 标准库，可选 `keyring` 将 API Key 存入系统凭据库。`skills/ds-search/` 是标准 Skill 源目录，由 `npx skills` 分发到目标 Harness / Agent。
 
 ## 安装
 
-需要 Python 3.10+、Git 和 DeepSeek 开放平台 API Key。直连 API 按官方规则计费，安装和默认诊断不发起 API 请求。
+需要 Python 3.10+、Node.js/npm 提供 `npx`，以及 DeepSeek 开放平台 API Key。直连 API 按官方规则计费，安装和默认诊断不发起 API 请求。
 
-在 macOS / Linux 终端执行：
+推荐从 GitHub 源安装。加载下载或复制的 Skill 前，先核对来源确实是 canonical GitHub 仓库 `NieAnSHOW/Ds-Search`，并检查复制到目标目录的实际文件。`skills/ds-search/agents/openai.yaml` 只是可选的 Codex UI metadata；其他 Harness 可以忽略它。
+
+全局安装供当前用户的 Harness / Agent 使用：
 
 ```sh
-git clone https://github.com/NieAnSHOW/Ds-Search.git
-cd Ds-Search
-python3 -c 'import os, shutil; from pathlib import Path; root = Path(os.environ.get("CODEX_HOME") or Path.home() / ".codex"); target = root / "skills" / "ds-search"; shutil.copytree("skills/ds-search", target); print(target)'
+npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --global --copy --yes
 ```
 
-Windows PowerShell：
+项目级安装在项目根目录执行，省略 `--global`：
 
-```powershell
-git clone https://github.com/NieAnSHOW/Ds-Search.git
-Set-Location Ds-Search
-@'
-import os
-import shutil
-from pathlib import Path
-root = Path(os.environ.get("CODEX_HOME") or Path.home() / ".codex")
-target = root / "skills" / "ds-search"
-shutil.copytree("skills/ds-search", target)
-print(target)
-'@ | py -3
+```sh
+npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --copy --yes
 ```
 
-安装位置为 `$CODEX_HOME/skills/ds-search`，未设置 `CODEX_HOME` 时为 `~/.codex/skills/ds-search`。目标已存在会报 `FileExistsError`，不会覆盖现有 Skill；更新前请自行检查、备份旧目录。随后重新启动 Codex 会话，使其发现新 Skill。其他 Agent 请将同一目录复制到其支持的技能目录。
+`--skill ds-search` 选择本仓库中的 `skills/ds-search/SKILL.md`，`--agent '*'` 选择本机 CLI 支持的全部 Agent，也可以改为具体 Agent 名称。`--copy` 将文件复制到目标目录；不使用它时，CLI 可能按自身策略创建符号链接。`--yes` 跳过确认。目标目录和 Harness 的刷新时机由 `skills` CLI 与目标 Harness 决定。
 
-下文 CLI 示例均在仓库根目录执行；安装后的入口为安装目录中的 `scripts/ds_search.py`。Windows 将示例中的 `python3` 换成 `py -3`。
+在本地 Ds-Search checkout 根目录运行下面命令，可只查看仓库能发现的 Skill：
+
+```sh
+npx skills add . --list
+```
+
+在 `skills` 1.7.2 中，`--list` cannot be combined with `--json`；不要把两个选项放在同一条命令中。需要机器可读输出时，按 CLI 版本支持的独立 `--json` 命令使用。
+
+查看当前环境中已安装 Skill 的机器可读列表（这是安装状态查询，与上面的本地源发现分开）：
+
+```sh
+npx skills list --json
+```
+
+`npx skills list --json` 只列出已安装 Skill；不要把 `--json` 拼接到 `npx --yes skills@1.7.2 add . --list` 上。
+
+更新已通过 CLI 安装并记录来源的 Skill：
+
+```sh
+npx skills update ds-search --global --yes
+npx skills update ds-search --project --yes
+```
+
+更新前请确认范围和来源。项目级安装在项目根目录生成并维护 `skills-lock.json`，因此 `npx skills update ds-search --project --yes` 需要该项目记录。全局安装则在 `skills` CLI 的用户全局状态目录生成并维护 `.skill-lock.json`（具体位置可由 XDG 状态目录配置改变），因此 `npx skills update ds-search --global --yes` 需要该全局记录。两种锁定文件都由消费者 CLI 生成，不应预生成或提交到本仓库；仓库不维护任何 Harness 的目标目录映射。
+
+下文 CLI 示例均在仓库根目录执行；使用已安装副本时，将 `skills/ds-search` 替换为 CLI 实际安装的 Skill 根目录。Windows 将示例中的 `python3` 换成 `py -3`。
 
 ## 首次配置
 
@@ -87,7 +102,7 @@ python3 skills/ds-search/scripts/ds_search.py setup --storage env
 
 ## 使用
 
-在 Codex 中明确调用：
+安装后，由当前 Harness / Agent 按自然语言触发 `ds-search`，或使用其显式 Skill 语法。不要假设某个 Harness 的目录、刷新或调用命令。以 Codex 为例（可选）：
 
 ```text
 用 $ds-search 搜索 DeepSeek 官方的网页搜索文档，给出来源链接。
