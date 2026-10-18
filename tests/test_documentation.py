@@ -14,7 +14,10 @@ class SkillDocumentationTests(unittest.TestCase):
         self.assertIn("Skill 根目录", text)
         self.assertNotRegex(text, r"(?i)(CODEX_HOME|~/.codex|codex/skills|重启 Codex)")
         self.assertNotIn("在 Codex 中", text)
-        self.assertIn("[references/setup.md](references/setup.md)", text)
+        self.assertRegex(text, r"\[[^\]]+\]\(references/setup\.md\)")
+        self.assertRegex(text, r"\[[^\]]+\]\(references/api\.md\)")
+        self.assertTrue((SKILL.parent / "references" / "setup.md").is_file())
+        self.assertTrue((SKILL.parent / "references" / "api.md").is_file())
         self.assertIn("scripts/ds_search.py", text)
 
 
