@@ -1,3 +1,4 @@
+# Optional Codex UI metadata; other Harnesses can ignore this file.
 interface:
   display_name: "DeepSeek Search"
   short_description: "使用 DeepSeek 官方接口搜索网页、抓取正文，并安全初始化凭据"

@@ -22,7 +22,7 @@ LICENSE / TASK.md / logo.png 沿用现有文件
 .github/workflows/ci.yml     离线测试与结构检查
 skills/ds-search/
   SKILL.md                  触发条件、初始化/搜索/抓取流程
-  agents/openai.yaml        Codex 展示信息
+  agents/openai.yaml        可选的 Codex UI 展示信息
   scripts/ds_search.py       JSON CLI 入口与官方客户端
   references/setup.md       初始化、凭据来源与诊断
   references/api.md         已核实的 API 契约与搜索语法
@@ -30,7 +30,9 @@ tests/                      请求契约、初始化与安全行为回归
 docs/design.md              本方案
 ```
 
-Skill 目录可单独复制到 Agent 的技能目录。README 提供 Codex 的明确安装命令和通用目录说明，不修改用户全局 Agent 配置。
+`skills/ds-search/` 是仓库中的标准 Skill 布局：入口固定为 `SKILL.md`，脚本和参考资料位于同一目录下。通过 Vercel Labs `skills` CLI 发现、安装或更新时，CLI 负责选择项目/全局范围、目标 Agent 目录以及复制或链接策略；本仓库不复制或维护这些目标目录映射，也不提交消费者生成的 `skills-lock.json`。`agents/openai.yaml` 仅供 Codex UI 使用，其他 Harness 可以忽略。
+
+推荐使用 `npx skills add` 从仓库安装，使用 `npx skills update` 更新已安装副本。Skill 本身只描述 Harness 注入后的运行方式和相对资源路径，不要求某一 Harness 的目录、刷新或重启行为。
 
 ## CLI 与初始化
 

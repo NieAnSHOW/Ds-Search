@@ -5,11 +5,11 @@ description: 使用 DeepSeek 官方 API 搜索网页或抓取单页 Markdown；�
 
 # ds-search
 
-使用此 Skill 自带的 `scripts/ds_search.py` 调用官方接口。需要 Python 3.10+；所有脚本路径相对于此 Skill 目录，先解析实际安装位置，不假定当前项目有同名脚本。若用户指定虚拟环境，使用其绝对路径解释器。
+这是由当前 Harness 注入的可分发 Skill。Harness 应按本文件的触发说明提供能力；支持 `$ds-search` 命令的 Harness 可以把它作为显式调用示例，但自然语言触发同样有效。使用此 Skill 自带的 `scripts/ds_search.py` 调用官方接口。需要 Python 3.10+；所有脚本和参考文件路径都相对于已安装的 Skill 根目录解析，不依赖当前工作目录，也不假定项目中存在同名脚本。若用户指定虚拟环境，使用其绝对路径解释器。
 
 ## 凭据与初始化
 
-先运行 `python3 scripts/ds_search.py doctor` 检查状态，默认离线且不显示密钥。已有凭据可直接进行用户请求的操作；不要反复诊断。初始化或凭据故障时读取 [references/setup.md](references/setup.md)。
+先运行 `python3 scripts/ds_search.py doctor` 检查状态，默认离线且不显示密钥。已有凭据可直接进行用户请求的操作；不要反复诊断。初始化或凭据故障时读取 [references/setup.md](references/setup.md)。如果 Harness 从其他工作目录启动进程，先把命令中的相对路径解析到 Skill 根目录。
 
 密钥由用户在自己的终端输入或由外部密钥管理器注入。不要索取、接收代录、搜索文件找密钥，也不要把密钥放入命令参数、stdin JSON、聊天或本地文件。Agent 不执行 `--prompt` 或替用户完成隐藏输入。缺少凭据时提供用户可自行运行的初始化命令，等待其完成。
 
