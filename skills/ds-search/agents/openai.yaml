@@ -1,0 +1,4 @@
+interface:
+  display_name: "DeepSeek Search"
+  short_description: "使用 DeepSeek 官方接口搜索网页、抓取正文，并安全初始化凭据"
+  default_prompt: "用 $ds-search 搜索 DeepSeek 官方网页搜索文档，并列出来源链接。"
