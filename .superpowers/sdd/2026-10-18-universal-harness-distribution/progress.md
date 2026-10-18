@@ -28,3 +28,5 @@ Task 3: fix round 1/5 (2 quality findings addressed; commits b6b5c57..2b4f215; s
 
 Task 4: final verification complete. Default suite passed 60 tests with 2 opt-in CLI skips; `RUN_SKILLS_CLI_TESTS=1` passed all 60. Repository validator, Skill Creator validator, compileall, diff check, and extracted no-credential smoke test passed. Documentation/spec/plan wording was aligned to standalone `--list` discovery and separate `--json`; no runtime/client/tests changed.
 Task 4: minor review fix complete. README and verification docs now provide the independent installed-state command `npx skills list --json`, explicitly separate it from `npx --yes skills@1.7.2 add . --list`, and the documentation test asserts the command cannot disappear. Default and opt-in suites, repository/Skill validators, compileall, and diff check all passed.
+Task 3: complete (commits b6b5c57..2b4f215, review clean).
+Task 4: final whole-branch review clean; minor documentation fix c647363 re-reviewed clean.
