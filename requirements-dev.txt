@@ -1,0 +1,2 @@
+# Development checks only; the Search/Fetch client uses Python's standard library.
+PyYAML>=6.0.2,<7

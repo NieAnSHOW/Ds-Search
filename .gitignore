@@ -1,0 +1,31 @@
+# Credentials and local configuration (never distribute these).
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+secrets.json
+config.local.*
+
+# Python environments, bytecode and test output.
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage*
+htmlcov/
+*.egg-info/
+build/
+dist/
+*.skill
+
+# Editor / operating system / agent scratch data.
+.DS_Store
+.idea/
+.vscode/
+.omc/
+.superpowers/
+*.log
