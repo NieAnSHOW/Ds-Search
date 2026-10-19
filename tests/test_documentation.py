@@ -15,6 +15,17 @@ DOCS = [
 
 
 class SkillDocumentationTests(unittest.TestCase):
+    def test_setup_docs_offer_agent_launched_hidden_input(self):
+        for path in (SKILL, ROOT / "README.md", ROOT / "SECURITY.md",
+                     SKILL.parent / "references" / "setup.md"):
+            with self.subTest(path=path):
+                text = path.read_text(encoding="utf-8")
+                self.assertIn("setup --launch", text)
+        text = SKILL.read_text(encoding="utf-8")
+        self.assertNotIn("缺少凭据时提供用户可自行运行的初始化命令，等待其完成", text)
+        self.assertIn("launched", text)
+        self.assertIn("doctor", text)
+
     def test_skill_is_harness_neutral_and_uses_relative_resources(self):
         text = SKILL.read_text(encoding="utf-8")
 

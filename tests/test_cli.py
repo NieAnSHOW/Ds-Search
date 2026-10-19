@@ -34,6 +34,27 @@ class CLITests(unittest.TestCase):
                 code,data,err=self.run_cli(['setup','--storage',storage])
                 self.assertEqual(code,0);self.assertTrue(data['ok']);self.assertTrue(err)
 
+    def test_setup_launch_returns_only_launch_acknowledgement(self):
+        with patch.object(cli.credentials,'setup_keyring',side_effect=AssertionError('must not prompt in parent')),patch.object(cli,'launch_setup',create=True) as launch:
+            code,data,_=self.run_cli(['setup','--launch'])
+        self.assertEqual(code,0)
+        self.assertEqual(data,{'ok':True,'data':{'storage':'keyring','launched':True,'configured':False}})
+        launch.assert_called_once_with()
+
+    def test_setup_launch_rejects_guidance_modes_before_side_effects(self):
+        with patch.object(cli.credentials,'secure_backend',side_effect=AssertionError('must not access store')),patch.object(cli.credentials,'prompt_key',side_effect=AssertionError('must not prompt')),patch.object(cli,'launch_setup',create=True) as launch:
+            for storage in ('env','session'):
+                code,data,_=self.run_cli(['setup','--storage',storage,'--launch'])
+                self.assertEqual(code,1)
+                self.assertEqual(data['error']['code'],'argument_error')
+        launch.assert_not_called()
+
+    def test_setup_launch_guidance_mode_rejected_in_real_noninteractive_cli(self):
+        proc=subprocess.run([sys.executable,str(SCRIPTS/'ds_search.py'),'setup','--launch','--storage','env'],capture_output=True,timeout=5)
+        self.assertEqual(proc.returncode,1)
+        self.assertEqual(json.loads(proc.stdout)['error']['code'],'argument_error')
+        self.assertNotIn(b'Traceback',proc.stderr)
+
     def test_argument_errors_are_json_and_do_not_echo_supplied_keys(self):
         for args in (['search','--api-key',KEY], ['oops'+KEY], ['setup','--storage',KEY], ['search','--prompt='+KEY], []):
             code,data,_=self.run_cli(args)

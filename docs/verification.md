@@ -1,5 +1,16 @@
 # 验证记录
 
+## 2026-10-19 自动拉起初始化终端
+
+- 新增启动器和 CLI 回归先失败：缺少启动模块、`--launch` 尚未支持；文档回归先确认旧流程仍要求用户复制命令，再更新 Skill 指令。
+- `python3 -m unittest discover -s tests`：最终 78 项，76 项通过，2 项原有可选 skills CLI 集成测试未启用。
+- `python3 tools/check_repository.py`、`python3 -m compileall -q skills/ds-search/scripts tools` 和 `git diff --check` 通过。
+- 覆盖 macOS 固定 AppleScript 与参数隔离、特殊路径引用，Windows 独立控制台与原生输入输出，Linux 桌面/终端检测，启动超时及错误净化，安全后端预检失败，子进程结束等待与非交互退出，以及 `launched` 与 `configured` 的区分。
+- 另用无害 Python 子进程验证后台进程在严格警告模式下不会向父进程 stderr 打印生命周期警告，其他启动警告仍按失败处理。
+- 本机另用真实 `osascript` 验证固定脚本的 argv 保留引号、shell 特殊字符和换行，并用 `osacompile` 验证启动脚本语法，未打开终端或读取系统凭据库。其余系统启动调用为模拟，尚未完成真实桌面终端与系统凭据库的端到端验证；未使用真实密钥或调用付费 API。
+
+以下保留上一轮分发验证记录。
+
 日期：2026-10-18。工作分支：`codex/universal-harness-distribution`。
 
 ## 分发与安装检查

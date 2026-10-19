@@ -11,7 +11,11 @@ description: 使用 DeepSeek 官方 API 搜索网页或抓取单页 Markdown；�
 
 先运行 `python3 scripts/ds_search.py doctor` 检查状态，默认离线且不显示密钥。已有凭据可直接进行用户请求的操作；不要反复诊断。初始化或凭据故障时读取 [references/setup.md](references/setup.md)。如果 Harness 从其他工作目录启动进程，先把命令中的相对路径解析到 Skill 根目录。
 
-密钥由用户在自己的终端输入或由外部密钥管理器注入。不要索取、接收代录、搜索文件找密钥，也不要把密钥放入命令参数、stdin JSON、聊天或本地文件。Agent 不执行 `--prompt` 或替用户完成隐藏输入。缺少凭据时提供用户可自行运行的初始化命令，等待其完成。
+缺少凭据或用户要求初始化时，Agent 直接运行 `python3 scripts/ds_search.py setup --launch`，自动打开用户可见的独立终端。告诉用户在新终端的 `DeepSeek API Key` 隐藏输入处粘贴密钥并按回车，无需复制 Python 命令。始终使用同一个 Python 解释器和已安装 Skill 的绝对路径。
+
+`launched: true` 仅表示已请求打开终端，`configured: false` 表示尚未确认配置完成。等待用户完成后，用同一解释器运行离线 `doctor`；只有凭据可用才继续原任务。不要循环打开窗口、持续轮询或因为启动成功就宣称配置成功。启动失败时按 [初始化说明](references/setup.md) 处理；用户未完成或已取消时保留待配置状态。
+
+密钥由用户在独立终端输入或由外部密钥管理器注入。Agent 只负责启动和检查，不读取终端输入、不代录、不索取密钥、不搜索文件找密钥，也不把密钥放入命令参数、stdin JSON、聊天或本地文件。`search --prompt` / `fetch --prompt` 仍仅供用户自行运行。
 
 `setup --storage env` / `session` 只输出指引。`doctor --online` 会发送可能计费的搜索，仅在用户明确要求联网诊断时使用。仅在用户要求移除此工具凭据时运行 `forget`。
 

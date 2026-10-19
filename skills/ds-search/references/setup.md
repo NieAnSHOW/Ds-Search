@@ -20,14 +20,26 @@ npx skills update ds-search --project --yes
 
 ## 首次配置
 
-用户在 [DeepSeek 开放平台](https://platform.deepseek.com/) 创建 API Key，并在自己的交互终端运行：
+用户在 [DeepSeek 开放平台](https://platform.deepseek.com/) 创建 API Key。桌面环境中，由 Agent 使用当前 Python 解释器直接运行以下命令（脚本路径解析为已安装 Skill 的绝对路径）：
+
+```sh
+python3 scripts/ds_search.py setup --launch
+```
+
+命令会打开独立终端并启动配置。用户只需在新终端的 `DeepSeek API Key` 提示处粘贴密钥并按回车，输入不会显示。保存完成后终端保留结果，按回车结束。Agent 不读取或操作这个终端的输入。
+
+支持 macOS Terminal、Windows 独立控制台，以及带桌面会话和受支持终端的 Linux。启动器沿用当前 Python 解释器，使用绝对脚本路径，不依赖终端的工作目录。`--launch` 仅适用于 `keyring`；不会安装依赖或改用明文存储。
+
+返回 `launched: true, configured: false` 只说明已请求启动，不能作为配置成功的证据。用户完成后，Agent 用同一解释器执行离线 `doctor`，成功后继续原请求。用户取消或失败时不要反复拉起窗口；等待修复后重试。若仍有环境变量，`doctor` 可能报告来源为 `environment`，不证明本次系统凭据库保存成功。
+
+如果当前环境无法打开桌面终端，提供以下手动备用命令，由用户在自己的交互终端运行：
 
 ```sh
 python3 scripts/ds_search.py setup --storage keyring
 python3 scripts/ds_search.py doctor
 ```
 
-`setup` 默认为 `--storage keyring`。缺少依赖时，用户可主动用同一解释器执行 `python3 -m pip install keyring`，建议安装在虚拟环境中。不要由 Agent 自动安装依赖或输入密钥。
+`setup` 默认为 `--storage keyring`。启动前检查安全凭据库；缺少依赖时，用户可主动用同一解释器执行 `python3 -m pip install keyring`，建议安装在虚拟环境中。完成后 Agent 可以再次运行 `setup --launch`。不要由 Agent 自动安装依赖或输入密钥。
 
 仅允许 macOS Keychain、Windows Credential Locker、Linux Secret Service。缺少安全后端、凭据库锁定或读取失败时，先解决系统凭据库问题；不会退回明文存储。Linux 无桌面或容器环境通常更适合外部注入环境变量。
 
@@ -48,7 +60,8 @@ python3 scripts/ds_search.py setup --storage session
 
 | 问题 | 下一步 |
 | --- | --- |
-| 缺少凭据 | 请用户在自己的终端初始化；不要扫描项目或用户目录 |
+| 缺少凭据 | Agent 运行 `setup --launch`，用户在新终端隐藏输入；不要扫描项目或用户目录 |
+| 无法启动终端 | 本地桌面检查终端可用性及系统授权；远程、SSH、容器、CI 等无桌面环境使用手动交互终端或外部环境注入 |
 | 安装 keyring 后仍不可用 | 核对实际执行的 Python，使用安装依赖的同一解释器 |
 | 系统凭据库锁定或后端不安全 | 用户解锁或配置受支持的系统后端；无安全后端时选环境注入或用户临时模式 |
 | 没有交互终端或回显关闭失败 | 用户换到本地交互终端，不把密钥作为 stdin 或 argv |

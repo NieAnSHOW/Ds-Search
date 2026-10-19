@@ -12,6 +12,7 @@ ds-search 尽量缩小密钥暴露面，但不能保证已被攻陷的操作系�
 - 不接收 argv 密钥，不写普通文本凭据文件，不将密钥或片段打印到输出。不要将密钥发给 Agent、提交到仓库、写入 shell 历史或附在问题报告中。
 - `keyring` 是用户主动安装的可选依赖。只允许 macOS Keychain、Windows Credential Locker、Linux Secret Service 后端，拒绝明文、未知和链式回退后端。故障时显式失败。
 - `setup --storage env` 与 `setup --storage session` 只提供指引。`search --prompt` / `fetch --prompt` 仅供用户在自己的交互终端执行；没有交互终端、无法关闭回显或出现 `GetPassWarning` 时退出。
+- Agent 可执行 `setup --launch` 打开独立终端，使用同一 Python 和绝对脚本路径启动配置。密钥由用户在新终端隐藏输入，启动进程不接收、转发或读取输入，不将密钥放入 argv、stdin、临时脚本或聊天。只检查安全凭据库和启动状态，不自动安装依赖；启动成功不代表密钥已保存，完成后需离线检查。无桌面或终端启动失败时显式报错。
 - 系统凭据库条目为 service `ds-search`、account `deepseek-api-key`。`forget` 仅删除此条目，环境变量由提供它的用户或密钥管理器清除。
 
 环境变量会被子进程继承，并可能被具有相应权限的进程读取。虚拟环境和 `keyring` 包也属于信任边界；请检查所用解释器和依赖来源。

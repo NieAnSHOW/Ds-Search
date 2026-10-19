@@ -9,6 +9,7 @@ import warnings
 import ds_credentials as credentials
 from ds_client import Client, decode_json, redact, validate_input
 from ds_errors import AppError
+from ds_setup_launcher import launch_setup
 
 INPUT_LIMIT = 64 * 1024
 
@@ -39,6 +40,7 @@ def parser():
         sub.add_argument('--prompt', action='store_true', help='显式选择用户交互终端的临时隐藏输入，覆盖环境变量与凭据库')
     setup = subs.add_parser('setup', allow_abbrev=False)
     setup.add_argument('--storage', choices=('keyring', 'env', 'session'), default='keyring')
+    setup.add_argument('--launch', action='store_true', help='打开本机交互终端，由用户自行隐藏输入 Key（仅 keyring）')
     doctor = subs.add_parser('doctor', allow_abbrev=False)
     doctor.add_argument('--online', action='store_true', help='发起一次可能计费的搜索连接检查')
     subs.add_parser('forget', allow_abbrev=False)
@@ -69,8 +71,13 @@ def _main(argv=None):
         else:
             args = parser().parse_args(args_list)
             if args.command == 'setup':
+                if args.launch and args.storage != 'keyring':
+                    raise AppError('argument_error', '--launch 仅适用于 keyring 存储。')
                 print('在 https://platform.deepseek.com 创建 API Key。不要把 Key 粘贴到 Agent 聊天或命令行参数。', file=sys.stderr)
-                if args.storage == 'keyring':
+                if args.launch:
+                    launch_setup()
+                    data = {'storage': 'keyring', 'launched': True, 'configured': False}
+                elif args.storage == 'keyring':
                     credentials.setup_keyring()
                     data = {'storage': 'keyring', 'configured': True}
                 else:

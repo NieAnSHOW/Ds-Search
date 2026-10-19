@@ -37,6 +37,7 @@ docs/design.md              本方案
 ## CLI 与初始化
 
 - `setup`：说明如何在 DeepSeek 开放平台创建 Key；用户在自己的交互终端中通过隐藏输入配置。优先提供系统凭据库持久化路径，检测不到受支持的安全后端时明确失败，提供临时模式与环境注入说明。
+- `setup --launch`：Agent 自动请求打开独立桌面终端，由同一 Python 和绝对脚本路径运行系统凭据库配置。用户只在该终端隐藏输入，Agent 不接收密钥。启动返回 `launched: true, configured: false`，待用户完成后用离线 `doctor` 确认可用性。缺少安全后端或桌面终端时显式失败，不自动安装依赖；`env` / `session` 不支持此选项。
 - `doctor`：只输出凭据是否可用、凭据来源和运行环境信息，绝不输出 Key 或其片段。默认不调用付费 API；显式检查连接时说明会发起请求。
 - `search`：输入 query 和可选 count、ori_question、localization、need_content，返回结构化搜索结果。
 - `fetch`：输入单个 URL，返回 title 与 Markdown content。

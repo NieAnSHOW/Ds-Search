@@ -63,6 +63,18 @@ npx skills update ds-search --project --yes
 
 先在 [DeepSeek 开放平台](https://platform.deepseek.com/) 创建 API Key。**只在自己的终端输入密钥，不要发送给 Agent 或粘贴到聊天、命令参数、项目文件中。**
 
+### 让 Agent 自动打开配置
+
+安装好下述可选依赖 `keyring` 后，告诉 Agent：
+
+```text
+帮我初始化 ds-search，直接打开密钥输入终端。
+```
+
+Agent 会运行 `setup --launch`，自动打开独立终端。你只需在 `DeepSeek API Key` 提示处粘贴密钥并按回车，输入不会显示，无需复制 Python 命令。保存后终端显示结果；返回聊天告知已完成，Agent 会离线检查并继续原任务。
+
+支持 macOS、Windows 和具备受支持终端的 Linux 桌面。`launched: true` 只表示已请求打开窗口，配置成功需后续检查；缺少依赖、安全凭据库或桌面终端时会给出错误，按下方说明处理。已有安全凭据时无需重复初始化。
+
 ### 存入系统凭据库
 
 可选依赖 `keyring` 需要由用户主动安装。建议使用虚拟环境：
@@ -83,7 +95,7 @@ py -3 -m venv .venv
 .\.venv\Scripts\python.exe skills/ds-search/scripts/ds_search.py doctor
 ```
 
-`setup` 会在交互终端隐藏输入；成功后仅保存到受支持的 macOS Keychain、Windows Credential Locker 或 Linux Secret Service。系统凭据库不可用、被锁定或后端不受支持时会失败，不会降级为明文文件。
+以上为手动配置的备用流程。让 Agent 自动打开终端时，将命令末尾的 `setup --storage keyring` 换成 `setup --launch`，由 Agent 执行。`setup` 会在交互终端隐藏输入；成功后仅保存到受支持的 macOS Keychain、Windows Credential Locker 或 Linux Secret Service。系统凭据库不可用、被锁定或后端不受支持时会失败，不会降级为明文文件。
 
 **后续必须使用安装了 `keyring` 的同一个 Python 解释器。** 使用上述虚拟环境时，将后文 `python3` 换成 `.venv/bin/python`，Windows 换成 `.\.venv\Scripts\python.exe`。让 Agent 调用时也明确提供该解释器的绝对路径；复制 Skill 不会复制仓库中的虚拟环境。
 
@@ -167,7 +179,7 @@ Search 与 Fetch 分别有账号级 5 QPS 限制；Fetch 还有目标域名限�
 
 | 现象 | 处理 |
 | --- | --- |
-| 未找到凭据 | 运行 `doctor`；确认 Agent 使用了同一 Python 和凭据环境，再在自己的终端初始化 |
+| 未找到凭据 | Agent 运行 `setup --launch` 打开输入终端；完成后用同一 Python 运行离线 `doctor` |
 | 无安全凭据库、凭据库锁定 | 安装同解释器的 `keyring` 并解锁系统凭据库；服务器可选择外部环境注入 |
 | 隐藏输入失败 | 换到支持关闭回显的本地交互终端；不要把密钥改为普通 stdin 输入 |
 | 401 | 在开放平台检查 Key 有效性；不要将 Key 放进 issue |
