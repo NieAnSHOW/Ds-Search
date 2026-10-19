@@ -32,11 +32,11 @@ class SkillDocumentationTests(unittest.TestCase):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
 
         self.assertIn(
-            "npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --global --copy --yes",
+            "npx skills add NieAnSHOW/ds-search --skill ds-search --agent '*' --global --copy --yes",
             readme,
         )
         self.assertIn(
-            "npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --copy --yes",
+            "npx skills add NieAnSHOW/ds-search --skill ds-search --agent '*' --copy --yes",
             readme,
         )
         self.assertIn("npx skills update ds-search --global --yes", readme)
@@ -51,7 +51,7 @@ class SkillDocumentationTests(unittest.TestCase):
     def test_install_docs_require_source_review_and_optional_codex_metadata(self):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
 
-        self.assertRegex(readme, r"(?i)(核对|验证|检查).{0,100}NieAnSHOW/Ds-Search")
+        self.assertRegex(readme, r"(?i)(核对|验证|检查).{0,100}NieAnSHOW/ds-search")
         self.assertRegex(readme, r"(?i)(检查|inspect).{0,100}(复制|copied)")
         self.assertIn("agents/openai.yaml", readme)
         self.assertRegex(readme, r"(?i)optional Codex UI metadata|可选.*Codex.*UI")
@@ -70,7 +70,7 @@ class SkillDocumentationTests(unittest.TestCase):
     def test_discovery_command_is_scoped_to_local_checkout(self):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
 
-        self.assertIn("本地 Ds-Search checkout 根目录", readme)
+        self.assertIn("本地 ds-search checkout 根目录", readme)
         self.assertIn("npx skills add . --list", readme)
 
     def test_fenced_commands_never_combine_list_and_json_flags(self):

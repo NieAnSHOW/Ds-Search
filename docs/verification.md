@@ -7,13 +7,13 @@
 仓库的标准 Skill 路径为 `skills/ds-search/SKILL.md`。推荐使用 Vercel Labs `skills` CLI：
 
 ```sh
-npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --global --copy --yes
-npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --copy --yes
+npx skills add NieAnSHOW/ds-search --skill ds-search --agent '*' --global --copy --yes
+npx skills add NieAnSHOW/ds-search --skill ds-search --agent '*' --copy --yes
 npx skills update ds-search --global --yes
 npx skills update ds-search --project --yes
 ```
 
-只读发现检查应从本地 Ds-Search checkout 根目录运行 `npx --yes skills@1.7.2 add . --list`；CLI 输出用于确认发现名称 `ds-search`，源代码中的 `skills/ds-search/SKILL.md` 路径另行断言。`skills` 1.7.2 禁止把 `--list` 与 `--json` 组合：`--list` 只用于人类可读发现检查，机器可读 JSON 检查必须使用独立命令，不得拼接这两个选项。项目安装记录为项目根目录的 `skills-lock.json`；全局安装记录为 CLI 用户全局状态目录中的 `.skill-lock.json`（具体位置可由 XDG 状态目录配置改变）。两种记录均由消费者生成，本仓库不预生成或提交。
+只读发现检查应从本地 ds-search checkout 根目录运行 `npx --yes skills@1.7.2 add . --list`；CLI 输出用于确认发现名称 `ds-search`，源代码中的 `skills/ds-search/SKILL.md` 路径另行断言。`skills` 1.7.2 禁止把 `--list` 与 `--json` 组合：`--list` 只用于人类可读发现检查，机器可读 JSON 检查必须使用独立命令，不得拼接这两个选项。项目安装记录为项目根目录的 `skills-lock.json`；全局安装记录为 CLI 用户全局状态目录中的 `.skill-lock.json`（具体位置可由 XDG 状态目录配置改变）。两种记录均由消费者生成，本仓库不预生成或提交。
 
 已安装 Skill 的机器可读列表使用独立命令 `npx skills list --json`；它查询已安装状态，不替代本地源发现，也不修改仓库或安装目录。
 

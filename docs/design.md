@@ -4,7 +4,7 @@
 
 依据 TASK.md，实现名为 `ds-search` 的可分发 Agent Skill，通过 DeepSeek 官方原始 JSON API 完成网页搜索和单页 Markdown 抓取。仓库交付可执行脚本、Skill 指令、初始化引导、中文 README、安全说明、离线测试和 CI。沿用现有 MIT LICENSE，使用用户提供的根目录 `logo.png`。
 
-当前仓库已初始化 Git，位于 `main`，远端为 `NieAnSHOW/Ds-Search`。本次“初始化”补齐项目结构与开发检查，不重复 git init，不默认推送或发布，也不读取现有个人密钥。
+当前仓库已初始化 Git，位于 `main`，远端为 `NieAnSHOW/ds-search`。本次“初始化”补齐项目结构与开发检查，不重复 git init，不默认推送或发布，也不读取现有个人密钥。
 
 ## 方案选择
 

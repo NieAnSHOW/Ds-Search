@@ -4,7 +4,7 @@ ds-search 尽量缩小密钥暴露面，但不能保证已被攻陷的操作系�
 
 ## Skill 分发边界
 
-推荐从已核对的 GitHub 源安装：`npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --global --copy --yes`；项目级安装省略 `--global`。加载下载或复制的 Skill 前，应核对 canonical 源并检查实际复制文件。`npx skills` 只下载并放置 Skill 文件，不读取或传输 DeepSeek API Key。项目级更新 `npx skills update ds-search --project --yes` 依赖项目根目录的 `skills-lock.json`；全局更新 `npx skills update ds-search --global --yes` 依赖 CLI 用户全局状态目录中的 `.skill-lock.json`（具体位置可由 XDG 状态目录配置改变）。两种锁定文件都由消费者生成，不属于本仓库。发现本地 Ds-Search checkout 内容时，从 checkout 根目录运行 `npx skills add . --list`，`skills` 1.7.2 不允许与 `--json` 组合。
+推荐从已核对的 GitHub 源安装：`npx skills add NieAnSHOW/ds-search --skill ds-search --agent '*' --global --copy --yes`；项目级安装省略 `--global`。加载下载或复制的 Skill 前，应核对 canonical 源并检查实际复制文件。`npx skills` 只下载并放置 Skill 文件，不读取或传输 DeepSeek API Key。项目级更新 `npx skills update ds-search --project --yes` 依赖项目根目录的 `skills-lock.json`；全局更新 `npx skills update ds-search --global --yes` 依赖 CLI 用户全局状态目录中的 `.skill-lock.json`（具体位置可由 XDG 状态目录配置改变）。两种锁定文件都由消费者生成，不属于本仓库。发现本地 ds-search checkout 内容时，从 checkout 根目录运行 `npx skills add . --list`，`skills` 1.7.2 不允许与 `--json` 组合。
 
 ## 凭据存储与输入
 
@@ -34,6 +34,6 @@ ds-search 尽量缩小密钥暴露面，但不能保证已被攻陷的操作系�
 
 ## 报告问题
 
-涉及凭据泄漏、认证绕过等问题，请优先使用仓库 [Security 页面](https://github.com/NieAnSHOW/Ds-Search/security)中的私密漏洞报告入口（若已启用）。若入口不可用，可提交不含利用细节和敏感信息的 issue，请求维护者提供私密渠道。
+涉及凭据泄漏、认证绕过等问题，请优先使用仓库 [Security 页面](https://github.com/NieAnSHOW/ds-search/security)中的私密漏洞报告入口（若已启用）。若入口不可用，可提交不含利用细节和敏感信息的 issue，请求维护者提供私密渠道。
 
 报告可包含操作系统、Python / keyring 版本、经过删减的复现步骤和固定错误码。不要上传真实密钥、环境变量转储、系统凭据库导出、完整网络流量或含私密内容的搜索输入。

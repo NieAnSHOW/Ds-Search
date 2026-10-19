@@ -18,7 +18,7 @@ Task 1: implementation complete (commit 91400c1; initial review pending).
 Task 1: fix round 1/5 (1 finding addressed; commits 91400c1..6abe5fb; scoped re-review clean).
 Task 1: complete (commits 91400c1..6abe5fb, review clean).
 Task 2: implementation complete (commit f719f50; pending task review).
-Task 2: review finding (SPEC ❌, QUALITY ❌): document source inspection and optional Codex metadata in README; distinguish project skills-lock.json from global .skill-lock.json/XDG state; clarify discovery runs from Ds-Search checkout; add executable command-line check forbidding --list with --json. Fix round 1 pending.
+Task 2: review finding (SPEC ❌, QUALITY ❌): document source inspection and optional Codex metadata in README; distinguish project skills-lock.json from global .skill-lock.json/XDG state; clarify discovery runs from ds-search checkout; add executable command-line check forbidding --list with --json. Fix round 1 pending.
 Task 2: fix round 1/5 (3 findings addressed; commits f719f50..8373d93; scoped re-review pending).
 Task 2: complete (commits f719f50..8373d93, review clean).
 Ruling: Task 3 discovery test separates CLI name output from repository path assertion — `skills` 1.7.2 `--list` human output reports the discovered name but not guaranteed nested path; requiring the path in stdout would make the test contradict observed CLI behavior. Cost if wrong: a future CLI could change presentation, but repository layout remains independently pinned.

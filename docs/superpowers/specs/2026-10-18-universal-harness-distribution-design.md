@@ -6,7 +6,7 @@
 
 成功标准：
 
-1. `npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --global --copy --yes` 能从 GitHub 仓库发现并安装 Skill。
+1. `npx skills add NieAnSHOW/ds-search --skill ds-search --agent '*' --global --copy --yes` 能从 GitHub 仓库发现并安装 Skill。
 2. `npx skills update ds-search --global --yes` 能使用安装记录更新 Skill；项目级安装也有等价命令。
 3. Skill 的触发说明、README、初始化文案和安全边界不依赖某个单一 Harness；Codex 只作为可选示例。
 4. `agents/openai.yaml` 仍可为 Codex 提供 UI 元数据，但不会成为其他 Harness 的运行时依赖。

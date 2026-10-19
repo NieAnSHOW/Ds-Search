@@ -4,7 +4,7 @@
 
 客户端固定请求 `https://api.deepseek.com`，使用 Bearer 鉴权及 JSON，不支持自定义地址或认证字段。以下 JSON 均为 CLI 的 stdin 内容，脚本路径相对 Skill 根目录。
 
-Skill 源目录是仓库中的 `skills/ds-search/`，推荐使用 `npx skills` 安装或更新。发现本地 Ds-Search checkout 时，从 checkout 根目录运行 `npx skills add . --list`；`skills` 1.7.2 不允许把 `--list` 与 `--json` 组合。项目安装记录为项目根目录的 `skills-lock.json`，全局安装记录为 CLI 用户全局状态目录中的 `.skill-lock.json`（具体位置可由 XDG 状态目录配置改变）；两者均由消费者生成，安装器和消费者 Harness 负责目标目录与刷新时机。
+Skill 源目录是仓库中的 `skills/ds-search/`，推荐使用 `npx skills` 安装或更新。发现本地 ds-search checkout 时，从 checkout 根目录运行 `npx skills add . --list`；`skills` 1.7.2 不允许把 `--list` 与 `--json` 组合。项目安装记录为项目根目录的 `skills-lock.json`，全局安装记录为 CLI 用户全局状态目录中的 `.skill-lock.json`（具体位置可由 XDG 状态目录配置改变）；两者均由消费者生成，安装器和消费者 Harness 负责目标目录与刷新时机。
 
 ## Search
 

@@ -1,10 +1,10 @@
 # 初始化与诊断
 
-`ds-search` 由 `npx skills` 从 `NieAnSHOW/Ds-Search` 分发。全局安装和项目安装分别使用：
+`ds-search` 由 `npx skills` 从 `NieAnSHOW/ds-search` 分发。全局安装和项目安装分别使用：
 
 ```sh
-npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --global --copy --yes
-npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --copy --yes
+npx skills add NieAnSHOW/ds-search --skill ds-search --agent '*' --global --copy --yes
+npx skills add NieAnSHOW/ds-search --skill ds-search --agent '*' --copy --yes
 ```
 
 更新已安装副本：
@@ -14,7 +14,7 @@ npx skills update ds-search --global --yes
 npx skills update ds-search --project --yes
 ```
 
-项目级更新依赖项目根目录的 `skills-lock.json`；全局更新依赖 `skills` CLI 用户全局状态目录中的 `.skill-lock.json`（具体位置可由 XDG 状态目录配置改变）。两种记录都由消费者 CLI 生成和维护，不由仓库预生成。发现本地 Ds-Search checkout 时，从该 checkout 根目录运行 `npx skills add . --list`，不要与 `--json` 组合（`skills` 1.7.2 会拒绝该组合）。
+项目级更新依赖项目根目录的 `skills-lock.json`；全局更新依赖 `skills` CLI 用户全局状态目录中的 `.skill-lock.json`（具体位置可由 XDG 状态目录配置改变）。两种记录都由消费者 CLI 生成和维护，不由仓库预生成。发现本地 ds-search checkout 时，从该 checkout 根目录运行 `npx skills add . --list`，不要与 `--json` 组合（`skills` 1.7.2 会拒绝该组合）。
 
 以下 Python 命令从已安装的 Skill 根目录运行；Python 3.10+，Windows 可用 `py -3` 替换 `python3`。如果 `keyring` 安装在虚拟环境中，所有命令都使用那个环境的 Python 绝对路径。Harness 负责把 `scripts/ds_search.py` 解析到该 Skill 根目录，不要求固定的全局路径。
 

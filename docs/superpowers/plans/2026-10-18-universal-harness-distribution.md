@@ -59,10 +59,10 @@
 - Modify: `docs/verification.md`
 
 **Interfaces:**
-- Canonical GitHub source: `NieAnSHOW/Ds-Search`.
+- Canonical GitHub source: `NieAnSHOW/ds-search`.
 - Preferred commands:
-  - `npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --global --copy --yes`
-  - `npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --copy --yes`
+  - `npx skills add NieAnSHOW/ds-search --skill ds-search --agent '*' --global --copy --yes`
+  - `npx skills add NieAnSHOW/ds-search --skill ds-search --agent '*' --copy --yes`
   - `npx skills update ds-search --global --yes`
   - `npx skills update ds-search --project --yes`
 - Discovery command: `npx --yes skills@1.7.2 add . --list`; verify the discovered name separately from the canonical source path, and never append `--json` to `--list`.

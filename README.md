@@ -16,23 +16,23 @@
 
 需要 Python 3.10+、Node.js/npm 提供 `npx`，以及 DeepSeek 开放平台 API Key。直连 API 按官方规则计费，安装和默认诊断不发起 API 请求。
 
-推荐从 GitHub 源安装。加载下载或复制的 Skill 前，先核对来源确实是 canonical GitHub 仓库 `NieAnSHOW/Ds-Search`，并检查复制到目标目录的实际文件。`skills/ds-search/agents/openai.yaml` 只是可选的 Codex UI metadata；其他 Harness 可以忽略它。
+推荐从 GitHub 源安装。加载下载或复制的 Skill 前，先核对来源确实是 canonical GitHub 仓库 `NieAnSHOW/ds-search`，并检查复制到目标目录的实际文件。`skills/ds-search/agents/openai.yaml` 只是可选的 Codex UI metadata；其他 Harness 可以忽略它。
 
 全局安装供当前用户的 Harness / Agent 使用：
 
 ```sh
-npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --global --copy --yes
+npx skills add NieAnSHOW/ds-search --skill ds-search --agent '*' --global --copy --yes
 ```
 
 项目级安装在项目根目录执行，省略 `--global`：
 
 ```sh
-npx skills add NieAnSHOW/Ds-Search --skill ds-search --agent '*' --copy --yes
+npx skills add NieAnSHOW/ds-search --skill ds-search --agent '*' --copy --yes
 ```
 
 `--skill ds-search` 选择本仓库中的 `skills/ds-search/SKILL.md`，`--agent '*'` 选择本机 CLI 支持的全部 Agent，也可以改为具体 Agent 名称。`--copy` 将文件复制到目标目录；不使用它时，CLI 可能按自身策略创建符号链接。`--yes` 跳过确认。目标目录和 Harness 的刷新时机由 `skills` CLI 与目标 Harness 决定。
 
-在本地 Ds-Search checkout 根目录运行下面命令，可只查看仓库能发现的 Skill：
+在本地 ds-search checkout 根目录运行下面命令，可只查看仓库能发现的 Skill：
 
 ```sh
 npx skills add . --list
